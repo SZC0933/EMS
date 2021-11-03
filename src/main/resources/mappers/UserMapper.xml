@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yjxxt.ems.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.yjxxt.ems.bean.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="true_name" property="trueName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="com_id" property="comId" jdbcType="INTEGER" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="ec_phone" property="ecPhone" jdbcType="VARCHAR" />
+    <result column="vc" property="vc" jdbcType="INTEGER" />
+    <result column="health" property="health" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_name, true_name, sex, user_pwd, com_id, user_phone, ec_phone, vc, health, 
+    create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yjxxt.ems.bean.User" >
+    insert into t_user (id, user_name, true_name, 
+      sex, user_pwd, com_id, 
+      user_phone, ec_phone, vc, 
+      health, create_date, update_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, #{comId,jdbcType=INTEGER}, 
+      #{userPhone,jdbcType=VARCHAR}, #{ecPhone,jdbcType=VARCHAR}, #{vc,jdbcType=INTEGER}, 
+      #{health,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yjxxt.ems.bean.User" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="trueName != null" >
+        true_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="userPwd != null" >
+        user_pwd,
+      </if>
+      <if test="comId != null" >
+        com_id,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
+      </if>
+      <if test="ecPhone != null" >
+        ec_phone,
+      </if>
+      <if test="vc != null" >
+        vc,
+      </if>
+      <if test="health != null" >
+        health,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null" >
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="comId != null" >
+        #{comId,jdbcType=INTEGER},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ecPhone != null" >
+        #{ecPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="vc != null" >
+        #{vc,jdbcType=INTEGER},
+      </if>
+      <if test="health != null" >
+        #{health,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yjxxt.ems.bean.User" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    update t_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null" >
+        true_name = #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="comId != null" >
+        com_id = #{comId,jdbcType=INTEGER},
+      </if>
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ecPhone != null" >
+        ec_phone = #{ecPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="vc != null" >
+        vc = #{vc,jdbcType=INTEGER},
+      </if>
+      <if test="health != null" >
+        health = #{health,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yjxxt.ems.bean.User" >
+    update t_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      true_name = #{trueName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      com_id = #{comId,jdbcType=INTEGER},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      ec_phone = #{ecPhone,jdbcType=VARCHAR},
+      vc = #{vc,jdbcType=INTEGER},
+      health = #{health,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <!--根据用户名查询用户对象-->
+  <select id="queryUserByUserName"  parameterType="string" resultType="com.yjxxt.ems.bean.User">
+    select * from t_user
+    <where>
+      user_name=#{userName}
+    </where>
+  </select>
+
+  <!--查询用户-->
+  <select id="selectByParams" parameterType="com.yjxxt.ems.query.UserQuery" resultType="com.yjxxt.ems.bean.User">
+    select * from t_user
+    <where>
+      <if test="userName!=null and userName!=''">
+        and user_name=#{userName}
+      </if>
+      <if test="comId!=null and comId!=''">
+        and com_id=#{comId}
+      </if>
+      <if test="vc!=null and vc!=''">
+        and vc=#{vc}
+      </if>
+    </where>
+  </select>
+
+  <!--(批量)删除-->
+  <delete id="deleteBatch">
+    delete from t_user
+    where id in
+    <foreach collection="array" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!--根据name查询用户-->
+  <select id="selectByName" resultType="com.yjxxt.ems.bean.User">
+    select * from t_user where user_name = #{userName}
+  </select>
+  <!--根据phone查询用户-->
+  <select id="selectByPhone" resultType="com.yjxxt.ems.bean.User">
+    select * from t_user where user_phone = #{phone}
+  </select>
+
+  <!--  //根据手机号查询id-->
+  <select id="selectById" resultType="java.lang.Integer">
+    select id from t_user where user_phone = #{userPhone}
+  </select>
+
+  <!--  //修改user表的状态码-->
+  <update id="updateById">
+    update t_user set health = 1
+    <where>
+      id = #{userId}
+    </where>
+  </update>
+
+
+  <!--  根据用户名查询用户信息-->
+  <select id="selectUserByName" resultType="com.yjxxt.ems.bean.User">
+    select * from t_user
+    <where>
+      <if test="userName!=null and userName!=''">
+        user_name = #{userName}
+      </if>
+    </where>
+  </select>
+
+
+  <!--  //根据手机号查询用户-->
+  <select id="selectByPhone1" resultType="com.yjxxt.ems.bean.User">
+    select * from t_user where user_phone = #{userPhone}
+  </select>
+
+
+  <!--  //根据确诊人员的userPhone修改用户健康状态   （已存在用户）-->
+  <update id="updateUserHealthById">
+    update t_user set health = 2 where user_phone = #{userPhone}
+  </update>
+
+
+
+</mapper>

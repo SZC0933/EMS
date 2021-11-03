@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yjxxt.ems.mapper.VaccinationMapper" >
+  <resultMap id="BaseResultMap" type="com.yjxxt.ems.bean.Vaccination" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="true_name" property="trueName" jdbcType="VARCHAR" />
+    <result column="first" property="first" jdbcType="VARCHAR" />
+    <result column="first_date" property="firstDate" jdbcType="TIMESTAMP" />
+    <result column="second" property="second" jdbcType="VARCHAR" />
+    <result column="second_date" property="secondDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, true_name, first, first_date, second, second_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_vaccination
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_vaccination
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteVa">
+    <!--(批量)删除-->
+      delete from t_vaccination
+      where id in
+      <foreach collection="array" item="id" separator=",">
+        (#{id})
+      </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.yjxxt.ems.bean.Vaccination" >
+    insert into t_vaccination (id, user_id, true_name, 
+      first, first_date, second, 
+      second_date)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{trueName,jdbcType=VARCHAR}, 
+      #{first,jdbcType=VARCHAR}, #{firstDate,jdbcType=TIMESTAMP}, #{second,jdbcType=VARCHAR}, 
+      #{secondDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yjxxt.ems.bean.Vaccination" >
+    insert into t_vaccination
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="trueName != null" >
+        true_name,
+      </if>
+      <if test="first != null" >
+        first,
+      </if>
+      <if test="firstDate != null" >
+        first_date,
+      </if>
+      <if test="second != null" >
+        second,
+      </if>
+      <if test="secondDate != null" >
+        second_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="trueName != null" >
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="first != null" >
+        #{first,jdbcType=VARCHAR},
+      </if>
+      <if test="firstDate != null" >
+        #{firstDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="second != null" >
+        #{second,jdbcType=VARCHAR},
+      </if>
+      <if test="secondDate != null" >
+        #{secondDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yjxxt.ems.bean.Vaccination" >
+    update t_vaccination
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="trueName != null" >
+        true_name = #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="first != null" >
+        first = #{first,jdbcType=VARCHAR},
+      </if>
+      <if test="firstDate != null" >
+        first_date = #{firstDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="second != null" >
+        second = #{second,jdbcType=VARCHAR},
+      </if>
+<!--      <if test="secondDate != null" >-->
+        second_date = #{secondDate,jdbcType=TIMESTAMP},
+<!--      </if>-->
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yjxxt.ems.bean.Vaccination" >
+    update t_vaccination
+    set user_id = #{userId,jdbcType=INTEGER},
+      true_name = #{trueName,jdbcType=VARCHAR},
+      first = #{first,jdbcType=VARCHAR},
+      first_date = #{firstDate,jdbcType=TIMESTAMP},
+      second = #{second,jdbcType=VARCHAR},
+      second_date = #{secondDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--多条件查询-->
+  <select id="selectByParams" parameterType="com.yjxxt.ems.query.VaccinationQuery" resultType="com.yjxxt.ems.bean.Vaccination">
+    select * from t_vaccination
+    <where>
+      <if test="trueName!=null and trueName!=''">
+        and true_name=#{trueName}
+      </if>
+      <if test="first!=null and first!=''">
+        and first=#{first}
+      </if>
+      <if test="second!=null and second!=''">
+        and second=#{second}
+      </if>
+    </where>
+  </select>
+
+  <!--通过id查询对象-->
+    <select id="selectById" resultMap="BaseResultMap">
+      select * from t_vaccination where id=#{id}
+    </select>
+
+</mapper>

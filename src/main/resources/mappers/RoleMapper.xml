@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yjxxt.ems.mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.yjxxt.ems.bean.Role" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_remark" property="roleRemark" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, role_name, role_remark, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yjxxt.ems.bean.Role" >
+    insert into t_role (id, role_name, role_remark, 
+      create_date, update_date)
+    values (#{id,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleRemark,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yjxxt.ems.bean.Role" >
+    insert into t_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="roleRemark != null" >
+        role_remark,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleRemark != null" >
+        #{roleRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yjxxt.ems.bean.Role" >
+    update t_role
+    <set >
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleRemark != null" >
+        role_remark = #{roleRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yjxxt.ems.bean.Role" >
+    update t_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      role_remark = #{roleRemark,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--  条件查询-->
+  <select id="selectByParams" parameterType="com.yjxxt.ems.query.RoleQuery" resultType="com.yjxxt.ems.bean.Role">
+    select * from t_role
+    <where>
+      <if test="roleName!=null and roleName!=''">
+        and role_name like concat("%",#{roleName},"%")
+      </if>
+    </where>
+  </select>
+
+  <!--  通过角色名查询-->
+  <select id="selectByName" resultMap="BaseResultMap">
+    select * from  t_role where role_name=#{roleName}
+  </select>
+
+  <!--查询所有角色-->
+  <select id="seleceAllRole" parameterType="int" resultType="java.util.Map">
+    SELECT
+r2.id,
+r2.role_name AS roleName,
+CASE
+WHEN IFNULL(t_temp.id, 0 ) = 0 THEN ""
+ELSE "selected" END
+AS "selected"
+FROM
+t_role r2
+LEFT JOIN
+( SELECT
+r1.id
+FROM
+t_role r1
+LEFT JOIN
+t_user_role ur
+ON
+r1.id = ur.role_id
+WHERE
+ur.user_id = #{id}
+) t_temp
+ON
+r2.id = t_temp.id
+
+  </select>
+
+  <!--删除-->
+  <update id="updateRoleById">
+    update t_role set is_valid = 0 where id = #{id}
+  </update>
+
+  <!--统计角色权限资源数量-->
+  <select id="countPermissionByRoleId" resultType="java.lang.Integer">
+    select count(*) from t_permission where role_id = #{roleId}
+  </select>
+
+  <!--删除角色权限资源-->
+  <delete id="deletePermissionsByRoleId">
+    delete from t_permission where role_id = #{roleId}
+  </delete>
+</mapper>

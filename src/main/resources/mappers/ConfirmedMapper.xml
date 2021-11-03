@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yjxxt.ems.mapper.ConfirmedMapper" >
+
+  <resultMap id="BaseResultMap" type="com.yjxxt.ems.bean.Confirmed" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="true_name" property="trueName" jdbcType="VARCHAR" />
+    <result column="tc_phone" property="tcPhone" jdbcType="VARCHAR" />
+    <result column="com_id" property="comId" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_id, true_name, tc_phone, com_id, state, create_date
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_confirmed
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_confirmed
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.yjxxt.ems.bean.Confirmed" >
+    insert into t_confirmed (id, user_id, true_name, 
+      tc_phone, com_id, state, 
+      create_date)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{trueName,jdbcType=VARCHAR}, 
+      #{tcPhone,jdbcType=VARCHAR}, #{comId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.yjxxt.ems.bean.Confirmed" >
+    insert into t_confirmed
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="trueName != null" >
+        true_name,
+      </if>
+      <if test="tcPhone != null" >
+        tc_phone,
+      </if>
+      <if test="comId != null" >
+        com_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="trueName != null" >
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="tcPhone != null" >
+        #{tcPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="comId != null" >
+        #{comId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+<!--  修改信息  完成版-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yjxxt.ems.bean.Confirmed" >
+    update t_confirmed
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="trueName != null" >
+        true_name = #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="tcPhone != null" >
+        tc_phone = #{tcPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="comId != null" >
+        com_id = #{comId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.yjxxt.ems.bean.Confirmed" >
+    update t_confirmed
+    set user_id = #{userId,jdbcType=INTEGER},
+      true_name = #{trueName,jdbcType=VARCHAR},
+      tc_phone = #{tcPhone,jdbcType=VARCHAR},
+      com_id = #{comId,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="uBPKS" parameterType="com.yjxxt.ems.bean.Confirmed">
+    update t_confirmed
+    <set >
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <!--  查询所有的社区  根据条件-->
+  <select id="selectByParams" parameterType="ConfirmedQuery" resultType="Confirmed" >
+    SELECT
+    tc.id,
+    tc.true_name as trueName,
+    tc.tc_phone,
+    ty.address,
+    tc.state,
+    tc.create_date as createDate
+    FROM
+    t_confirmed AS tc
+    LEFT JOIN t_community AS ty ON tc.com_id = ty.id
+    <where>
+      <if test="trueName!=null and trueName!=''">
+        and tc.true_name=#{trueName}
+      </if>
+      <if test="tcPhone !=null and tcPhone!=''">
+        and tc.tc_phone =#{tcPhone}
+      </if>
+      <if test="state !=null and state!=''">
+        and tc.state =#{state}
+      </if>
+      <if test="comAddress !=null and comAddress!=''">
+        and ty.address =#{comAddress}
+      </if>
+    </where>
+  </select>
+
+
+    <!--  添加  可以获取自动生长列的配置-->
+  <insert id="insertHasKey" parameterType="Confirmed" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    insert into t_confirmed
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="trueName != null" >
+        true_name,
+      </if>
+      <if test="tcPhone != null" >
+        tc_phone,
+      </if>
+      <if test="comId != null" >
+        com_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="trueName != null" >
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="tcPhone != null" >
+        #{tcPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="comId != null" >
+        #{comId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <!--  修改信息  完成版  只修改状态码-->
+<!--  //////-->
+
+
+<!--  //统计当前有多少条要删除的记录-->
+  <select id="countUserRoleNum" resultType="java.lang.Integer">
+     select count(*) from t_confirmed where id = #{id}
+  </select>
+
+
+
+  <!--  //删除当前确诊人员的信息-->
+  <delete id="deleteUserRoleByUserId">
+     delete from t_confirmed where id = #{id}
+  </delete>
+
+  <!--  批量删除 (修用户表的健康状态，同时，删除确诊表的个人信息)-->
+  <delete id="deleteBatch">
+    delete from t_confirmed
+    <where>
+      id in
+      <foreach collection="array" open="(" close=")" separator="," item="id">
+        #{id}
+      </foreach>
+    </where>
+  </delete>
+
+
+<!--  //根据Id查询用户-->
+  <select id="selectId" resultType="com.yjxxt.ems.bean.Confirmed">
+    select * from t_confirmed where id = #{id}
+  </select>
+
+
+
+  <!--  //    查询所有社区-->
+  <select id="selectComs" resultType="java.util.Map">
+     select id,address from t_community
+  </select>
+
+
+</mapper>
